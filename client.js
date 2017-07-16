@@ -1,16 +1,14 @@
 let thrift = require('thrift');
+let assert = require('assert');
 let GetThriftyService = require('./gen-nodejs/GetThriftyService');
 let gtypes = require('./gen-nodejs/get_types')
 
-let transport = thrift.TBufferedTransport;
+let transport = thrift.TFramedTransport;
 let protocol = thrift.TBinaryProtocol;
 
-var host = "localhost";
-var port = 8080;
-if (process.env.PORT) {
-  host = "megumin-get-thrifty.herokuapp.com";
-  port = process.env.PORT;
-}
+let isLocal = true;
+let host = isLocal ? "localhost" : "megumin-get-thrifty.herokuapp.com";
+let port = isLocal ? 8080 : 80;
 
 var connection = thrift.createConnection(host, port, {
   transport: transport,
